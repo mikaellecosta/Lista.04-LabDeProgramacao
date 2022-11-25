@@ -9,6 +9,8 @@
   <a href="#questão-8">8</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#questão-9">9</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#questão-10">10</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#questão-11">11</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#questão-12">12</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
 </p>
 
 # 📚 Lista 04 - Programação em C
@@ -374,7 +376,291 @@ void printvetor(int *vet, int tam){
 
 
 ``` c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
+#define TAM 10
+
+void sort(int*, int, int);
+void count(int*, int*, int, int);
+void printvetor(int*, int);
+
+int main(void){
+    int x[TAM], *f, n;
+    srand(time(NULL));
+
+    printf("Limite dos valores sorteados: ");
+    scanf("%d", &n);
+
+    f = malloc(n * sizeof(int));
+    sort(x, TAM, n);
+    count(x, f, TAM, n);
+
+    printf("\nVetor sorteado\n");
+    printvetor(x, TAM);
+    
+    printf("\nFrequência dos números\n");
+    printvetor(f, n);
+
+    free(f);
+    
+    return 0;
+}
+
+void sort(int *vet, int tam, int n){
+    for(int i = 0; i < tam; i++){
+        *(vet + i) = rand() % n;
+    }
+}
+
+void count(int *vet, int *f, int tam, int n){
+    int cont, termoAtual = 0;
+    for(int i = 0; i < n; i++){
+        cont = 0;
+        for(int j = 0; j < tam; j++){
+            if(vet[j] == termoAtual){
+                cont++;
+            }
+        }
+        f[i] = cont;
+        termoAtual++;
+    }
+}
+
+void printvetor(int *vet, int tam){
+    printf("[");
+    for(int i = 0; i < tam; i++){
+        printf(" %d ", *(vet + i));
+    }
+    printf("]\n");
+}
+}
+```
+
+## Questão 11:
+
+
+``` c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+// x= coluna da matriz
+// y= linha da matriz
+int *alocarvetor(int *v, int n) {
+  v = calloc(n, sizeof(int));
+  if (v == NULL) {
+    printf("Não é possivel alocar memória");
+    exit(1);
+  }
+  return v;
+}
+
+int **alocarmatriz(int **m, int n) {
+  m = calloc(n, sizeof(int *));
+  if (m == NULL) {
+    printf("Não é possivel alocar memória");
+    exit(1);
+  }
+  for (int i = 0; i < n; i++) {
+    *(m + i) = calloc(n, sizeof(int));
+    if ((m + 1) == NULL) {
+      printf("Não é possivel alocar memória");
+      exit(1);
+    }
+  }
+  return m;
+}
+
+void preenchervetor(int *v, int qtd, int maximo) {
+  for (int i = 0; i < qtd; i++) {
+    *(v + i) = rand() % maximo;
+  }
+}
+
+void contadordefrenquencia(int *x, int *y, int **M, int n, int m) {
+  for (int i = 0; i < m; i++) {
+    for (int j = 0; j < n; j++) {
+      for (int k = 0; k < n; k++) {
+        if (*(x + i) == k && *(y + i) == j) {
+          *(*(M + j) + k) += 1;
+        }
+      }
+    }
+  }
+}
+
+void mostrarvetor(int *v, int qtd) {
+  for (int i = 0; i < qtd; i++) {
+    printf("%3d ", *(v + i));
+  }
+  printf("\n");
+}
+
+void mostrarmatriz(int **m, int n) {
+  for (int i = 0; i < n; i++) {
+    for (int k = 0; k < n; k++) {
+      printf("%3d ", *(*(m + i) + k));
+    }
+    printf("\n");
+  }
+}
+
+int main(void) {
+
+  int *x, *y, **M, m, n;
+
+  printf("digite a dimensão da matriz[NxN] => ");
+  scanf("%d", &n);
+
+  M = alocarmatriz(M, n);
+
+  printf("digite o tamanho dos vetores X & Y => ");
+  scanf("%d", &m);
+
+  x = alocarvetor(x, m);
+  srand(time(NULL));
+  y = alocarvetor(y, m);
+
+  preenchervetor(x, m, n);
+  preenchervetor(y, m, n);
+
+  puts("Valor dos vetores X & Y Respectivamente");
+
+  mostrarvetor(x, m);
+  mostrarvetor(y, m);
+
+  puts("matriz referente a frequencia dos vetores(antes de contar a "
+       "frequencia)");
+
+  mostrarmatriz(M, n);
+
+  puts("Matriz de frequencia");
+  contadordefrenquencia(x, y, M, n, m);
+  mostrarmatriz(M, n);
+
+  return 0;
+}
+```
+
+## Questão 12:
+
+
+``` c
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+// x= coluna da matriz
+// y= linha da matriz
+int *alocarvetor(int *v, int n) {
+  v = calloc(n, sizeof(int));
+  if (v == NULL) {
+    printf("Não é possivel alocar memória");
+    exit(1);
+  }
+  return v;
+}
+
+int **alocarmatriz(int **m, int n) {
+  m = calloc(n, sizeof(int *));
+  if (m == NULL) {
+    printf("Não é possivel alocar memória");
+    exit(1);
+  }
+  for (int i = 0; i < n; i++) {
+    *(m + i) = calloc(n, sizeof(int));
+    if ((m + 1) == NULL) {
+      printf("Não é possivel alocar memória");
+      exit(1);
+    }
+  }
+  return m;
+}
+
+int linhadamatriz(int x) {
+  if (x + 1 > 0 && x <= 3) {
+    return x;
+  } else if (x <= 5) {
+    return x - 1;
+  } else if (x <= 7) {
+    return x + 1;
+  } else if (x <= 9) {
+    return x - 2;
+  } else {
+    return x + 2;
+  }
+}
+
+void preenchervetor(int *x, int *y, int qtd, int maximo) {
+  for (int i = 0; i < qtd; i++) {
+    *(x + i) = rand() % maximo;
+    *(y + i) = linhadamatriz(*(x + i));
+  }
+}
+
+void contadordefrenquencia(int *x, int *y, int **M, int n, int m) {
+  for (int i = 0; i < m; i++) {
+    for (int j = 0; j < n; j++) {
+      for (int k = 0; k < n; k++) {
+        if (*(x + i) == k && *(y + i) == j) {
+          *(*(M + j) + k) += 1;
+        }
+      }
+    }
+  }
+}
+
+void mostrarvetor(int *v, int qtd) {
+  for (int i = 0; i < qtd; i++) {
+    printf("%3d ", *(v + i));
+  }
+  printf("\n");
+}
+
+void mostrarmatriz(int **m, int n) {
+  for (int i = 0; i < n; i++) {
+    for (int k = 0; k < n; k++) {
+      printf("%3d ", *(*(m + i) + k));
+    }
+    printf("\n");
+  }
+}
+
+int main(void) {
+
+  int *x, *y, **M, m, n;
+
+  printf("digite a dimensão da matriz[NxN] => ");
+  scanf("%d", &n);
+
+  M = alocarmatriz(M, n);
+
+  printf("digite o tamanho dos vetores X & Y => ");
+  scanf("%d", &m);
+
+  x = alocarvetor(x, m);
+  y = alocarvetor(y, m);
+  srand(time(NULL));
+  preenchervetor(x, y, m, n);
+
+  puts("Valor dos vetores X & Y Respectivamente");
+
+  mostrarvetor(x, m);
+  mostrarvetor(y, m);
+
+  puts("matriz referente a frequencia dos vetores(antes de contar a "
+       "frequencia)");
+
+  mostrarmatriz(M, n);
+
+  puts("Matriz de frequencia");
+  contadordefrenquencia(x, y, M, n, m);
+  mostrarmatriz(M, n);
+
+  return 0;
+}
+Footer
+© 2022 GitHub, Inc.
 ```
 
 
